@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   namespace 'api' do
     namespace 'v1' do
-      resources :shortened_urls, :only => [:create, :show]
+      resources :shortened_urls, :only => [:create]
+      get '/shortened_urls/:unique_code', to: 'shortened_urls#show', as: :redirect_url
     end
   end
 
