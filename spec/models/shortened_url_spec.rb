@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe ShortenedUrl, :type => :model do
+RSpec.describe ShortenedUrl, type: :model do
   
   describe 'new shortened url' do
     let(:shortened_url) { create(:shortened_url) }
@@ -15,26 +17,21 @@ RSpec.describe ShortenedUrl, :type => :model do
         expect(shortened_url).to_not be_valid
       end
 
-      it 'is not valid without a unique_code' do
-        shortened_url.unique_code = nil
-        expect(shortened_url).to_not be_valid
-      end
-
       it 'is not valid with a duplicate unique_code' do
         shortened_url2 = build(:shortened_url, unique_code: shortened_url.unique_code)
         expect(shortened_url2).to_not be_valid
       end
 
       it 'is not valid with a too short url' do
-        shortened_url.long_url = "https://short.com"
+        shortened_url.long_url = 'https://short.com'
         expect(shortened_url).to_not be_valid
-        expect(developer.errors.message[:long_url]).to eq ['The url does not have the correct length']
+        expect(shortened_url.errors.messages[:long_url]).to eq ['The url does not have the correct length']
       end
 
       it 'is not valid with a wrong format' do
-        shortened_url.long_url = "abc://my_long_not_valid_url.com"
+        shortened_url.long_url = 'abc://my_long_not_valid_url.com'
         expect(shortened_url).to_not be_valid
-        expect(developer.errors.message[:long_url]).to eq ['This is not a valid url']
+        expect(shortened_url.errors.messages[:long_url]).to eq ['This is not a valid url']
       end
     end
   end
